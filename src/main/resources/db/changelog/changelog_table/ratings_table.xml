@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="ratings_table_setup" author="Aleksej">
+        <createTable tableName="ratings">
+            <column name="rt_id" type="BIGINT" autoIncrement="true"/>
+            <column name="rt_driver_id" type="BIGINT"/>
+            <column name="rt_passenger_id" type="BIGINT"/>
+            <column name="rt_rating" type="TINYINT"/>
+            <column name="rt_comment" type="VARCHAR(500)"/>
+            <column name="rt_is_by_passenger" type="boolean" />
+            <column name="rt_creation_date" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

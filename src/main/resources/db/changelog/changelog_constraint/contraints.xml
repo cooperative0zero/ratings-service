@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="constraints_setup" author="Aleksej">
+        <addPrimaryKey columnNames="rt_id" tableName="ratings" constraintName="pk_ratings"/>
+        <addNotNullConstraint columnName="rt_driver_id" tableName="ratings"/>
+        <addNotNullConstraint columnName="rt_passenger_id" tableName="ratings"/>
+        <addNotNullConstraint columnName="rt_rating" tableName="ratings"/>
+        <addNotNullConstraint columnName="rt_is_by_passenger" tableName="ratings"/>
+        <addNotNullConstraint columnName="rt_creation_date" tableName="ratings"/>
+    </changeSet>
+
+</databaseChangeLog>
