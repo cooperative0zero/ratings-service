@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Data
@@ -22,5 +23,7 @@ public class RatingResponse {
 
     private String comment;
 
-    private Date creationDate;
+    private OffsetDateTime creationDate;
+
+    private Boolean isByPassenger;
 }

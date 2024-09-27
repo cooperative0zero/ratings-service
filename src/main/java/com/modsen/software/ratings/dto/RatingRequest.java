@@ -1,15 +1,13 @@
 package com.modsen.software.ratings.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Data
@@ -33,6 +31,8 @@ public class RatingRequest {
     @Size(max = 500)
     private String comment;
 
-    private Date creationDate;
-}
+    private OffsetDateTime creationDate;
 
+    @NotNull
+    private Boolean isByPassenger;
+}

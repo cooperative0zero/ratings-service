@@ -1,18 +1,20 @@
 package com.modsen.software.ratings.controller;
 
+import com.modsen.software.ratings.dto.PaginatedResponse;
 import com.modsen.software.ratings.dto.RatingRequest;
 import com.modsen.software.ratings.dto.RatingResponse;
-import com.modsen.software.ratings.service.RatingService;
+import com.modsen.software.ratings.entity.Rating;
+import com.modsen.software.ratings.service.RatingServiceImpl;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Objects;
 
 @Validated
 @RequiredArgsConstructor
@@ -20,61 +22,83 @@ import java.util.List;
 @RequestMapping("/api/v1/ratings")
 public class RatingController {
 
-    private final RatingService ratingService;
+    private final RatingServiceImpl ratingService;
+
+    private final ConversionService conversionService;
 
     @GetMapping
-    public ResponseEntity<List<RatingResponse>> getAll(@RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
-                                                       @RequestParam(required = false, defaultValue = "10") @Min(1) Integer pageSize,
-                                                       @RequestParam(required = false, defaultValue = "id") String sortBy,
-                                                       @RequestParam(required = false, defaultValue = "desc") String sortOrder) {
+    @ResponseStatus(HttpStatus.OK)
+    public PaginatedResponse<RatingResponse> getAll(
+            @RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
+            @RequestParam(required = false, defaultValue = "10") @Min(1) Integer pageSize,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String sortOrder) {
 
-        List<RatingResponse> response = ratingService.getAll(pageNumber, pageSize, sortBy, sortOrder);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        var result = ratingService.getAll(pageNumber, pageSize, sortBy, sortOrder)
+                .stream()
+                .map(rating -> conversionService.convert(rating, RatingResponse.class))
+                .toList();
+
+        return new PaginatedResponse<>(result, pageNumber, pageSize, result.size());
     }
 
     @GetMapping("/passengers/{id}")
-    public ResponseEntity<List<RatingResponse>> getAllByPassengerId(@PathVariable @Min(1) Long id,
-                                                     @RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
-                                                     @RequestParam(required = false, defaultValue = "10") @Min(1) Integer pageSize,
-                                                     @RequestParam(required = false, defaultValue = "id") String sortBy,
-                                                     @RequestParam(required = false, defaultValue = "desc") String sortOrder) {
+    @ResponseStatus(HttpStatus.OK)
+    public PaginatedResponse<RatingResponse> getAllByPassengerId(
+            @PathVariable @Min(1) Long id,
+            @RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
+            @RequestParam(required = false, defaultValue = "10") @Min(1) Integer pageSize,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String sortOrder) {
 
-        List<RatingResponse> response = ratingService.getAllByPassengerId(id, pageNumber, pageSize, sortBy, sortOrder);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        var result = ratingService.getAllByPassengerId(id, pageNumber, pageSize, sortBy, sortOrder)
+                .stream()
+                .map(rating -> conversionService.convert(rating, RatingResponse.class))
+                .toList();
+
+        return new PaginatedResponse<>(result, pageNumber, pageSize, result.size());
     }
 
     @GetMapping("/drivers/{id}")
-    public ResponseEntity<List<RatingResponse>> getAllByDriverId(@PathVariable @Min(1) Long id,
-                                                     @RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
-                                                     @RequestParam(required = false, defaultValue = "10") @Min(1) Integer pageSize,
-                                                     @RequestParam(required = false, defaultValue = "id") String sortBy,
-                                                     @RequestParam(required = false, defaultValue = "desc") String sortOrder) {
+    @ResponseStatus(HttpStatus.OK)
+    public PaginatedResponse<RatingResponse> getAllByDriverId(
+            @PathVariable @Min(1) Long id,
+            @RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
+            @RequestParam(required = false, defaultValue = "10") @Min(1) Integer pageSize,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String sortOrder) {
 
-        List<RatingResponse> response = ratingService.getAllByDriverId(id, pageNumber, pageSize, sortBy, sortOrder);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        var result = ratingService.getAllByDriverId(id, pageNumber, pageSize, sortBy, sortOrder)
+                .stream()
+                .map(rating -> conversionService.convert(rating, RatingResponse.class))
+                .toList();
+
+        return new PaginatedResponse<>(result, pageNumber, pageSize, result.size());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RatingResponse> getById(@PathVariable @Min(1) Long id) {
-        RatingResponse response = ratingService.getById(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public RatingResponse getById(@PathVariable @Min(1) Long id) {
+        return conversionService.convert(ratingService.getById(id), RatingResponse.class);
     }
 
     @PostMapping
-    public ResponseEntity<RatingResponse> save(@RequestBody @Valid RatingRequest rideRequest) {
-        RatingResponse response = ratingService.save(rideRequest);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    public RatingResponse save(@RequestBody @Valid RatingRequest ratingRequest) {
+        var rating = Objects.requireNonNull(conversionService.convert(ratingRequest, Rating.class));
+        return conversionService.convert(ratingService.save(rating), RatingResponse.class);
     }
 
     @PutMapping
-    public ResponseEntity<RatingResponse> update(@RequestBody @Valid RatingRequest rideRequest) {
-        RatingResponse response = ratingService.update(rideRequest);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public RatingResponse update(@RequestBody @Valid RatingRequest ratingRequest) {
+        var rating = Objects.requireNonNull(conversionService.convert(ratingRequest, Rating.class));
+        return conversionService.convert(ratingService.update(rating), RatingResponse.class);
     }
 
     @PatchMapping("/{id}/rating/{rating}")
-    public ResponseEntity<RatingResponse> changeRating(@PathVariable @Min(1) Long id, @PathVariable @Min(1) @Max(5) Byte rating) {
-        RatingResponse response = ratingService.changeRating(id, rating);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public RatingResponse changeRating(@PathVariable @Min(1) Long id, @PathVariable @Min(1) @Max(5) Byte rating) {
+        return conversionService.convert(ratingService.changeRating(id, rating), RatingResponse.class);
     }
 }

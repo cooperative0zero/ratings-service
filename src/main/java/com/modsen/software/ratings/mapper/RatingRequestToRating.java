@@ -17,6 +17,7 @@ public class RatingRequestToRating implements Converter<RatingRequest, Rating> {
                 .creationDate(source.getCreationDate())
                 .passengerId(source.getPassengerId())
                 .driverId(source.getDriverId())
+                .isByPassenger(source.getIsByPassenger())
                 .build();
     }
 }

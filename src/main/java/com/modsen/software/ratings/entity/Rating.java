@@ -3,6 +3,7 @@ package com.modsen.software.ratings.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Getter
@@ -32,5 +33,8 @@ public class Rating {
     private String comment;
 
     @Column(name = "rt_creation_date", nullable = false)
-    private Date creationDate;
+    private OffsetDateTime creationDate;
+
+    @Column(name = "rt_is_by_passenger", nullable = false)
+    private Boolean isByPassenger;
 }
