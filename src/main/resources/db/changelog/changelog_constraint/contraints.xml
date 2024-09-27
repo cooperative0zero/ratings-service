@@ -10,6 +10,7 @@
         <addNotNullConstraint columnName="rt_driver_id" tableName="ratings"/>
         <addNotNullConstraint columnName="rt_passenger_id" tableName="ratings"/>
         <addNotNullConstraint columnName="rt_rating" tableName="ratings"/>
+        <addNotNullConstraint columnName="rt_is_by_passenger" tableName="ratings"/>
         <addNotNullConstraint columnName="rt_creation_date" tableName="ratings"/>
     </changeSet>
 

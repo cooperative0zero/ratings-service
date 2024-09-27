@@ -12,6 +12,7 @@
             <column name="rt_passenger_id" type="BIGINT"/>
             <column name="rt_rating" type="TINYINT"/>
             <column name="rt_comment" type="VARCHAR(500)"/>
+            <column name="rt_is_by_passenger" type="boolean" />
             <column name="rt_creation_date" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
