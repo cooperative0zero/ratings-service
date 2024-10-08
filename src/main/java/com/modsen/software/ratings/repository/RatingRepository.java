@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, Long> {
@@ -18,5 +18,5 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
 
     @Modifying
     @Query("UPDATE Rating rt SET rt.rating = :rating, creationDate = :creationDate WHERE rt.id = :id")
-    int changeRating(@Param("id") Long id, @Param("rating") Byte rating, @Param("creationDate") Date date);
+    int changeRating(@Param("id") Long id, @Param("rating") Byte rating, @Param("creationDate") OffsetDateTime date);
 }

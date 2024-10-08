@@ -16,6 +16,7 @@ public class RatingToRatingResponse implements Converter<Rating, RatingResponse>
                 .comment(source.getComment())
                 .creationDate(source.getCreationDate())
                 .passengerId(source.getPassengerId())
+                .isByPassenger(source.getIsByPassenger())
                 .driverId(source.getDriverId())
                 .build();
     }
