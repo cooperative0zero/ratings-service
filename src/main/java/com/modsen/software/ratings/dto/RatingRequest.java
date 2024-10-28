@@ -6,9 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -19,9 +17,11 @@ public class RatingRequest {
     private Long id;
 
     @Min(1)
+    @NotNull
     private Long driverId;
 
     @Min(1)
+    @NotNull
     private Long passengerId;
 
     @Min(1)
