@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "ratings")
-@Builder
+@Builder(toBuilder = true)
 public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
