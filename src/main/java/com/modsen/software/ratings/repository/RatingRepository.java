@@ -17,6 +17,6 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     Page<Rating> findAllByDriverId(Long driverId, Pageable pageable);
 
     @Modifying
-    @Query("UPDATE Rating rt SET rt.rating = :rating, creationDate = :creationDate WHERE rt.id = :id")
+    @Query("UPDATE Rating rt SET rt.rating = :rating, rt.creationDate = :creationDate WHERE rt.id = :id")
     int changeRating(@Param("id") Long id, @Param("rating") Byte rating, @Param("creationDate") OffsetDateTime date);
 }

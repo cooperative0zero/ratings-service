@@ -5,6 +5,8 @@ import com.modsen.software.ratings.dto.RatingRequest;
 import com.modsen.software.ratings.dto.RatingResponse;
 import com.modsen.software.ratings.entity.Rating;
 import com.modsen.software.ratings.service.RatingServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -20,6 +22,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/ratings")
+@Tag(name="Rating controller", description="Required for rating management")
 public class RatingController {
 
     private final RatingServiceImpl ratingService;
@@ -28,6 +31,10 @@ public class RatingController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "Get all ratings",
+            description = "Allows to get ratings values using pagination."
+    )
     public PaginatedResponse<RatingResponse> getAll(
             @RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
             @RequestParam(required = false, defaultValue = "10") @Min(1) Integer pageSize,
@@ -44,6 +51,10 @@ public class RatingController {
 
     @GetMapping("/passengers/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "Get all ratings by passenger's identifier",
+            description = "Allows to get ratings values by passenger's identifier using pagination."
+    )
     public PaginatedResponse<RatingResponse> getAllByPassengerId(
             @PathVariable @Min(1) Long id,
             @RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
@@ -61,6 +72,10 @@ public class RatingController {
 
     @GetMapping("/drivers/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "Get all ratings by driver's identifier",
+            description = "Allows to get ratings values by driver's identifier using pagination."
+    )
     public PaginatedResponse<RatingResponse> getAllByDriverId(
             @PathVariable @Min(1) Long id,
             @RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
@@ -78,12 +93,20 @@ public class RatingController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "Get rating by identifier",
+            description = "Allows to get rating by identifier."
+    )
     public RatingResponse getById(@PathVariable @Min(1) Long id) {
         return conversionService.convert(ratingService.getById(id), RatingResponse.class);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(
+            summary = "Create new rating",
+            description = "Allows to create new rating."
+    )
     public RatingResponse save(@RequestBody @Valid RatingRequest ratingRequest) {
         var rating = Objects.requireNonNull(conversionService.convert(ratingRequest, Rating.class));
         return conversionService.convert(ratingService.save(rating), RatingResponse.class);
@@ -91,6 +114,10 @@ public class RatingController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "Update rating",
+            description = "Allows to update rating."
+    )
     public RatingResponse update(@RequestBody @Valid RatingRequest ratingRequest) {
         var rating = Objects.requireNonNull(conversionService.convert(ratingRequest, Rating.class));
         return conversionService.convert(ratingService.update(rating), RatingResponse.class);
@@ -98,6 +125,10 @@ public class RatingController {
 
     @PatchMapping("/{id}/rating/{rating}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "Change rating's status",
+            description = "Allows to change rating's status."
+    )
     public RatingResponse changeRating(@PathVariable @Min(1) Long id, @PathVariable @Min(1) @Max(5) Byte rating) {
         return conversionService.convert(ratingService.changeRating(id, rating), RatingResponse.class);
     }
