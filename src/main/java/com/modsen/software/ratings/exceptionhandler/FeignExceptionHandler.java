@@ -2,7 +2,9 @@ package com.modsen.software.ratings.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.modsen.software.ratings.exception.BaseCustomException;
+import com.modsen.software.ratings.exception.ServiceNotAvailable;
 import feign.FeignException;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
