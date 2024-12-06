@@ -16,7 +16,7 @@ import java.util.Date;
 @Schema(description = "Rating response")
 public class RatingResponse {
     @Schema(description = "Identifier")
-    private Long id;
+    private String id;
 
     @Schema(description = "Driver's identifier")
     private Long driverId;

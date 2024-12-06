@@ -18,7 +18,7 @@ public class RatingRequest {
 
     @Min(1)
     @Schema(description = "Identifier")
-    private Long id;
+    private String id;
 
     @Min(1)
     @NotNull
