@@ -8,27 +8,22 @@ services:
       - ratings_db
     ports:
       - "8083:8080"
-      - "5005:5005"
     networks:
       - microservices-network
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - MONGO_DB=${MONGO_DB}
 
   ratings_db:
-    image: postgres:latest
-    container_name: ratings_db
+    image: 'mongo:latest'
+    container_name: ratingsdb-service
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
     ports:
-      - "5435:5432"
+      - "27017:27017"
     networks:
       - microservices-network
     volumes:
-      - /var/lib/docker/volumes/ratings-db:/var/lib/postgresql/data
+      - /var/lib/docker/volumes/mongodb-data:/data/db
 
 networks:
   microservices-network:

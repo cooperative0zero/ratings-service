@@ -38,7 +38,7 @@ public class RatingServiceImpl {
 
 
     @Transactional(readOnly = true)
-    public Rating getById(Long id) {
+    public Rating getById(String id) {
         return ratingRepository.findById(id)
                 .orElseThrow(()-> new RatingNotExistsException(String.format("Rating with id = %d not exists", id)));
     }
@@ -64,7 +64,7 @@ public class RatingServiceImpl {
     @Transactional
     public Rating save(Rating rating) {
         if (rating.getId() != null && ratingRepository.existsById(rating.getId())) {
-            throw new RatingAlreadyExistsException(String.format("Rating with id = %d already exists", rating.getId()));
+            throw new RatingAlreadyExistsException(String.format("Rating with id = %s already exists", rating.getId()));
         } else {
             if (!(driverServiceClient.getDriverById(rating.getDriverId()).getStatusCode() == HttpStatus.OK
                 && passengerServiceClient.getPassengerById(rating.getPassengerId()).getStatusCode() == HttpStatus.OK))
@@ -80,7 +80,7 @@ public class RatingServiceImpl {
     @Transactional
     public Rating update(Rating request) {
         if (!ratingRepository.existsById(request.getId()))
-            throw new RatingNotExistsException(String.format("Rating with id = %d not exists", request.getId()));
+            throw new RatingNotExistsException(String.format("Rating with id = %s not exists", request.getId()));
 
         if (!(driverServiceClient.getDriverById(request.getDriverId()).getStatusCode() == HttpStatus.OK
                 && passengerServiceClient.getPassengerById(request.getPassengerId()).getStatusCode() == HttpStatus.OK))
@@ -92,9 +92,9 @@ public class RatingServiceImpl {
     }
 
     @Transactional
-    public Rating changeRating(Long id, Byte rating) {
+    public Rating changeRating(String id, Byte rating) {
         if (ratingRepository.changeRating(id, rating, OffsetDateTime.now()) == 0)
-            throw new RatingNotExistsException(String.format("Rating with id = %d not exists", id));
+            throw new RatingNotExistsException(String.format("Rating with id = %s not exists", id));
 
         return ratingRepository.findById(id).get();
     }

@@ -97,7 +97,7 @@ public class RatingController {
             summary = "Get rating by identifier",
             description = "Allows to get rating by identifier."
     )
-    public RatingResponse getById(@PathVariable @Min(1) Long id) {
+    public RatingResponse getById(@PathVariable @Min(1) String id) {
         return conversionService.convert(ratingService.getById(id), RatingResponse.class);
     }
 
@@ -129,7 +129,7 @@ public class RatingController {
             summary = "Change rating's status",
             description = "Allows to change rating's status."
     )
-    public RatingResponse changeRating(@PathVariable @Min(1) Long id, @PathVariable @Min(1) @Max(5) Byte rating) {
+    public RatingResponse changeRating(@PathVariable @Min(1) String id, @PathVariable @Min(1) @Max(5) Byte rating) {
         return conversionService.convert(ratingService.changeRating(id, rating), RatingResponse.class);
     }
 }
